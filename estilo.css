@@ -1,9 +1,16 @@
-h1{
-   color:indigo; 
-}
-label{
-    margin:10px;
-}
-input{
-    margin:10px;
-}
+body{
+    background-color: rgb(31, 90, 13);
+ }
+ h1, label{
+     color: white;
+ }
+ button{
+     border:none;
+     border-radius: 5px;
+     font-size: large;
+     background-color: white;
+ }
+ input{
+     margin: 10px;
+     width: 100px;
+ }
