@@ -1,0 +1,78 @@
+<!-- public/index.html -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EstudAi</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1 class="mt-4">StudAi</h1>
+    <form id="study-form" class="mb-4">
+      <div class="form-group">
+        <label for="disciplina">Disciplina</label>
+        <input type="text" class="form-control" id="disciplina" required>
+      </div>
+      <div class="form-group">
+        <label for="assunto">Assunto</label>
+        <input type="text" class="form-control" id="assunto" required>
+      </div>
+      <div class="form-group">
+        <label for="data">Data</label>
+        <input type="date" class="form-control" id="data" required>
+      </div>
+      <div class="form-group">
+        <label for="hora">hora</label>
+        <input type="time" class="form-control" id="hora" required>
+      </div>
+      <div class="form-group">
+        <label for="observacao">Observação</label>
+        <input type="text" class="form-control" id="observacao" required>
+      </div>
+      <div class="form-group">
+        <label for="conclusao">Concluido</label>
+        <input type="checkbox" class="form-control" id="conclusao" required>
+      </div>
+      <button type="submit" class="btn btn-primary">Adicionar</button>
+    </form>
+    <h2>Estudando</h2>
+    <ul id="lista-assuntos" class="list-group"></ul>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      fetch('/api/estudar')
+        .then(response => response.json())
+        .then(data => {
+          const assuntosLista = $('#lista-assuntos');
+          data.data.forEach(item => {
+            assuntosLista.append(`<li class="list-group-item">${item.disciplina} - ${item.assunto} - ${item.data}</li>`);
+          });
+        });
+
+      $('#study-form').on('submit', function(e) {
+        e.preventDefault();
+        const subject = $('#disciplina').val();
+        const topic = $('#assunto').val();
+        const date = $('#data').val();
+
+        fetch('/api/estudar', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ disciplina, assunto, data }),
+        })
+          .then(response => response.json())
+          .then(data => {
+            $('#lista-assuntos').append(`<li class="list-group-item">${data.data.disciplina} - ${data.data.assunto} - ${data.data.data}</li>`);
+            $('#study-form')[0].reset();
+          });
+      });
+    });
+  </script>
+</body>
+</html>
